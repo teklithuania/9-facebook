@@ -1,0 +1,49 @@
+header {
+    display: inline-block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 40px;
+    background-color: var(--main-color);
+    color: #FFF;
+}
+.container {
+    display: inline-block;
+    height: calc(100% - 400px);
+    width: 100%;
+    background-color: #ECEEF0;
+    color: #fff;
+}
+    aside {
+        display: inline-block;
+        width: calc(100% - 400px);
+        float: left;
+    }
+    .content {
+        display: inline-block;
+        width: 100px;
+        height: 100%;
+        float: left;
+        background-color: pink;
+    }
+
+    .content > .feed {
+        display: inline-block;
+        width: calc(100% - 200px);
+        height: 100%;
+        float: left;
+    }
+    .content > .ads {
+        display: inline-block;
+        width: 200px;
+        height: 100%;
+        float: left;  
+    }
+    .messenger {
+        display: inline-block;
+        width: 200px;
+        height: 100%;
+        float: left;
+        background-color: wheat;
+    }
