@@ -21,8 +21,6 @@ function renderFeed( data ) {
 
 function renderPost( data ) {
     console.log('-----------------');
-    console.log(data);
-
     let HTML = `<div class="post">
                     ${renderPostHeader( data.author, data.time )}
                     ${renderPostContent( data.content )}
@@ -34,12 +32,23 @@ function renderPost( data ) {
 function renderPostHeader( author, time ) {
     let HTML = '';
 
-    HTML = '<div class="header">HEADER</div>';
+    HTML = `<div class="header">
+                <img src="./img/${author.img}">
+                <div class="texts">
+                    <div class="title">
+                        <a href="${author.link}">${author.name} ${author.surname}</a>
+                    </div>
+                    <div class="time">${time}</div>
+                </div>
+                <i class="fa fa-ellipsis-h"></i>
+            </div>`;
 
     return HTML;
 }
 
-function renderPostContent() {
+function renderPostContent( content ) {
+    console.log(content);
+    
     let HTML = '';
 
     HTML = '<div class="content">CONTENT</div>';
@@ -48,7 +57,30 @@ function renderPostContent() {
 }
 
 function renderPostFooter() {
-    return '<div class="footer">FOOTER</div>';
+    return `<div class="footer">
+                <div class="row">
+                    <div class="action">
+                        <i class="fa fa-thumbs-up"></i>
+                        <div class="text">Like</div>
+                    </div>
+                    <div class="action">
+                        <i class="fa fa-comment-o"></i>
+                        <div class="text">Comment</div>
+                    </div>
+                </div>
+                <div class="row">
+                    <img src="./img/user.png">
+                    <div class="comment-form">
+                        <textarea></textarea>
+                        <div class="interactions">
+                            <i class="fa fa-smile-o"></i>
+                            <i class="fa fa-camera"></i>
+                            <i class="fa fa-file-image-o"></i>
+                            <i class="fa fa-user-secret"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>`;
 }
 
 renderFeed( feed );
