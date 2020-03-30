@@ -20,13 +20,11 @@ function renderFeed( data ) {
 }
 
 function renderPost( data ) {
-    console.log('-----------------');
-    let HTML = `<div class="post">
-                    ${renderPostHeader( data.author, data.time )}
-                    ${renderPostContent( data.content )}
-                    ${renderPostFooter()}
-                </div>`;
-    return HTML;
+    return `<div class="post">
+                ${renderPostHeader( data.author, data.time )}
+                ${renderPostContent( data.content )}
+                ${renderPostFooter()}
+            </div>`;
 }
 
 function renderPostHeader( author, time ) {
@@ -38,7 +36,7 @@ function renderPostHeader( author, time ) {
                     <div class="title">
                         <a href="${author.link}">${author.name} ${author.surname}</a>
                     </div>
-                    <div class="time">${time}</div>
+                    <div class="time">${ convertTime(time) }</div>
                 </div>
                 <i class="fa fa-ellipsis-h"></i>
             </div>`;
@@ -49,7 +47,7 @@ function renderPostHeader( author, time ) {
 function renderPostContent( content ) {
     let HTML = '<div class="content">';
     if ( content.text ) {
-        HTML += renderPostContentText( content.text, content.background );
+        HTML += renderPostContentText( content );
     }
     if ( content.images ) {
         HTML += renderPostContentGallery( content.images );
@@ -59,16 +57,42 @@ function renderPostContent( content ) {
     return HTML;
 }
 
-function renderPostContentText( text, background ) {
+function renderPostContentText( content ) {
+    const maxTextLength = 240;
+    const smallestTextLength = 30;
     let HTML = '';
+    let style = '';
+    let text = content.text;
 
-    HTML = `<p>${text}</p>`;
+    if ( text.length <= smallestTextLength ) {
+        style += 'big-text';
+    }
+
+    if ( content.background ) {
+        if ( !content.images || content.images.length === 0 ) {   
+            style += ' '+content.background;
+        }
+    }
+
+    if ( text.length >= maxTextLength ) {
+        text = text.substring( 0, maxTextLength );
+        let skipSymbols = 0;
+        for ( let i=maxTextLength-1; i>=0; i-- ) {
+            if ( text[i] === ' ' ) {
+                break;
+            }
+            skipSymbols++;
+        }
+        text = text.substring( 0, maxTextLength-skipSymbols-1 );
+        text += '... <span class="more">Read more</span>';
+    }
+
+    HTML = `<p class="${style}" data-fulltext="${content.text}">${text}</p>`;
 
     return HTML;
 }
 
 function renderPostContentGallery( images ) {
-    console.log(images);
     let HTML = '';
     let imgHTML = '';
     let moreHTML = '';
@@ -135,4 +159,25 @@ function renderPostFooter() {
             </div>`;
 }
 
+function convertTime( timestamp ) {
+    let time = '';
+
+    time = '6h';
+
+    return time;
+}
+
 renderFeed( feed );
+
+const readMores = document.querySelectorAll('.post p > .more');
+
+for ( let i=0; i<readMores.length; i++ ) {
+    const readMore = readMores[i];
+    readMore.addEventListener('click', readMoreClick );
+}
+
+function readMoreClick( event ) {
+    const p = event.target.closest('p');
+    const fullText = p.dataset.fulltext;
+    return p.innerText = fullText;
+}
